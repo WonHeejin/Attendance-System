@@ -6,25 +6,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script>
-function getList(){
-	getAjaxJson("StudyList","","classList");
-}
-function getAjaxJson(action, data, fn){
-	const ajax = new XMLHttpRequest();
-	
-	ajax.onreadystatechange = function(){
-		if(ajax.readyState == 4 && ajax.status == 200){
-			if(fn!=""){
-				window[fn](JSON.parse(ajax.responseText));	
-			}else{
-				alert(ajax.responseText);
-			}
-		}
-	};	
-	ajax.open("post", action, true);
-	ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	ajax.send(data);
-}
 function attendList(){
 	let td,tr;
 	for(idx=0;idx<4;idx++){
@@ -50,31 +31,40 @@ function search(){
 	const sName=student.options[student.selectedIndex].value;
 	alert(date+":"+cName+":"+sName);
 }
-function classList(data){
+function classList(){
 	const classes=document.getElementById("class");
-	for(idx=0;idx<data.length;idx++){
-		option=createOption(data[idx].slCode);
-		option.innerHTML=data[idx].slName;
+	for(idx=0;idx<4;idx++){
+		let option=createOption(4000+idx);
+		option.innerHTML=(idx==0)?"수업선택":(idx==1)?"수업1":(idx==2)?"수업2":"수업3";
 		classes.appendChild(option);
 	}
-	const slCode=classes.options[classes.selectedIndex].value;
-	getStudentList(slCode);
 }
-function getStudentList(slCode){
-	const data= "slCode="+encodeURIComponent(slCode);
-	getAjaxJson("getStList",data,"studentList");
-}
-function studentList(data){
-	
+function studentList(){
+	const classes=document.getElementById("class");
+	const cName=classes.options[classes.selectedIndex].value;
 	const student=document.getElementById("student");
 	while(student.hasChildNodes()){
 		student.removeChild(student.lastChild);
 	}
-	for(idx=0;idx<data.length;idx++){	
-		option=createOption(data[idx].emCode);
-		option.innerHTML=data[idx].emName;
-		student.appendChild(option);
+	for(idx=0;idx<3;idx++){
+		if(cName==4001){
+			option=createOption(5000+idx);
+			option.innerHTML=(idx==0)?"김땡땡":(idx==1)?"김쌩쌩":"김뺑뺑";
+			student.appendChild(option);
+		}else if(cName==4002){
+			option=createOption(5000+idx);
+			option.innerHTML=(idx==0)?"이땡땡":(idx==1)?"이쌩쌩":"이뺑뺑";
+			student.appendChild(option);
+		}else if(cName==4003){
+			option=createOption(5000+idx);
+			option.innerHTML=(idx==0)?"박땡땡":(idx==1)?"박쌩쌩":"박뺑뺑";
+			student.appendChild(option);
+		}else{
+			option=createOption(0);
+			option.innerHTML="학생선택";
+		}
 	}
+
 }
 function createOption(value){
 	const option=document.createElement("option");
@@ -128,7 +118,7 @@ table.type01 td {
 
 </style>
 </head>
-<body onLoad="getList()">
+<body onLoad="classList()">
 	<div id="logo">ICIA</div>
 	<div id="info">
 		[${accessInfo[0].emName}]님 환영합니다! 귀하의 등급은 관리자입니다. <input type="button" class="btn"
@@ -138,7 +128,7 @@ table.type01 td {
 	<div id="middle">	 
 		<span>날짜선택</span> 
 		<input name = "date" type="month"/>
-		<select id = "class" onChange="getStudentList(this.value)">
+		<select id = "class" onChange="studentList()">
 		</select> 
 		<select id="student">
 		<option>학생선택</option>

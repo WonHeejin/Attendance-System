@@ -13,8 +13,7 @@ import javax.servlet.http.HttpSession;
 
 
 
-@WebServlet({"/maxCode","/regMember","/StudyList","/getStList"
-			,"/GSL", "/GSMC"})
+@WebServlet({"/maxCode", "/startSign"})
 public class AjaxController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -46,21 +45,9 @@ public class AjaxController extends HttpServlet {
 			if(jobCode.equals("maxCode")) {
 				ig = new InfoManagement(req);
 				ajaxData = ig.backController("2");
-			}else if(jobCode.equals("regMember")) {
+			}if(jobCode.equals("startSign")) {
 				ig = new InfoManagement(req);
 				ajaxData = ig.backController("3");
-			}else if(jobCode.equals("StudyList")) {
-				ig = new InfoManagement(req);
-				ajaxData = ig.backController("4");
-			}else if(jobCode.equals("getStList")) {
-				ig = new InfoManagement(req);
-				ajaxData = ig.backController("5");
-			}else if(jobCode.equals("GSL")){
-				ig = new InfoManagement(req);
-				ajaxData = ig.backController("6");
-			}else if(jobCode.equals("GSMC")){
-				ig = new InfoManagement(req);
-				ajaxData = ig.backController("7");
 			}else {
 
 			}

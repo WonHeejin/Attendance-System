@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
 
 import beans.ActionBean;
 import beans.EmployeeBean;
+import beans.StudyListBean;
 
 
 
@@ -23,6 +25,7 @@ public class LoginManagement {
 
 	public ActionBean backController(int jobCode) {
 		ActionBean action = null;
+
 
 		switch(jobCode) {
 		case 1:
@@ -40,6 +43,7 @@ public class LoginManagement {
 
 		return action;
 	}
+
 
 	private ActionBean afterAccess() {
 		ActionBean action = new ActionBean();
@@ -62,37 +66,96 @@ public class LoginManagement {
 	private ActionBean accessCtl() {
 		ActionBean action = new ActionBean();
 		ArrayList<EmployeeBean> list = null;
-		DataAccessObject dao = null;
-		boolean tran = false;
-		this.emp = new EmployeeBean();
-		this.emp.setEmCode(this.req.getParameter("emCode"));
-		this.emp.setEmPassword(this.req.getParameter("emPassword"));
-		this.emp.setAccessType("1001");
-
-		dao = new DataAccessObject();
+		ArrayList<StudyListBean> slList = null;
+		String check  = this.req.getParameter("people");
+		DataAccessObject dao = new DataAccessObject();
 		Connection conn = dao.getConnection();
-		dao.modifyTranStatus(conn, false);
+		this.emp = new EmployeeBean();
+		boolean tran = false;
+		if(check.equals("1")){
+			this.emp.setStCode(this.req.getParameter("code"));
+			this.emp.setStPassword(this.req.getParameter("password"));
+			this.emp.setStLog("1001");
+			this.emp.setEmBwCode(check);
 
-		if(dao.isEmployee(conn, emp)) {
-			if(dao.insAccessHistory(conn, emp)) {
-				tran = true;
-				session = this.req.getSession();
-				session.setAttribute("emCode", emp.getEmCode());
+			dao = new DataAccessObject();
 
-				if((list = dao.getLogInfo(conn, emp))!= null) {	
-					req.setAttribute("accessInfo", list);
+			dao.modifyTranStatus(conn, false);
+
+			if(dao.isStudent(conn, emp)) {
+				if(dao.insAccessHistory(conn, emp)) {
+					tran = true;
+					session = this.req.getSession();
+					session.setAttribute("stCode", emp.getStCode());
+					slList = dao.getclassInfo(conn);
+					if((list = dao.getLogInfo(conn, emp))!= null) {	
+						req.setAttribute("accessInfo", list);
+					}
 				}
 			}
-		}
-		action.setPage(tran?"administrator.jsp":"index.html");
-		action.setRedirect(tran?false: true);
+			action.setPage(tran?"student.jsp":"index.html");
+			
 
+
+
+		}else if(check.equals("1000")){
+			this.emp.setEmCode(this.req.getParameter("code"));
+			this.emp.setEmPassword(this.req.getParameter("password"));
+			this.emp.setAccessType("1001");
+			this.emp.setEmBwCode(check);
+
+			dao = new DataAccessObject();
+
+			dao.modifyTranStatus(conn, false);
+
+			if(dao.isEmployee(conn, emp)) {
+				if(dao.insAccessHistory1(conn, emp)) {
+					tran = true;
+					session = this.req.getSession();
+					session.setAttribute("emCode", emp.getEmCode());
+					slList = dao.getclassInfo(conn);
+					if((list = dao.getLogInfo(conn, emp))!= null) {	
+						req.setAttribute("accessInfo", list);
+					}
+				}
+			}
+			action.setPage(tran?"teacher.jsp":"index.html");
+			
+
+		}else if(check.equals("1001")){
+			this.emp.setEmCode(this.req.getParameter("code"));
+			this.emp.setEmPassword(this.req.getParameter("password"));
+			this.emp.setAccessType("1001");
+			this.emp.setEmBwCode(check);
+
+			dao = new DataAccessObject();
+
+
+			dao.modifyTranStatus(conn, false);
+
+			if(dao.isEmployee(conn, emp)) {
+				if(dao.insAccessHistory1(conn, emp)) {
+					tran = true;
+					session = this.req.getSession();
+					session.setAttribute("emCode", emp.getEmCode());
+					slList = dao.getclassInfo(conn);
+					if((list = dao.getLogInfo(conn, emp))!= null) {	
+						req.setAttribute("accessInfo", list);
+					}
+				}
+			}
+			action.setPage(tran?"administrator.jsp":"index.html");
+			
+
+		}
+		action.setRedirect(tran?false: true);
 		dao.setTransaction(conn, tran);
 		dao.modifyTranStatus(conn, true);
 		dao.closeConnection(conn);
-
 		return action;
 	}
+
+
 
 	private ActionBean accessOutCtl() {
 		ActionBean action = new ActionBean();

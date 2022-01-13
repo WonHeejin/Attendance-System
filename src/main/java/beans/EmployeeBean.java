@@ -7,29 +7,27 @@ public class EmployeeBean {
 	private String emBwCode;
 	private String date;
 	private String accessType;
-	private String slCode;
-	private String slName;
-	private String signal;
+	private String stCode;
+	private String stPassword;
+	private String stLog;
 	
-	
-	
-	public String getSignal() {
-		return signal;
+	public String getStLog() {
+		return stLog;
 	}
-	public void setSignal(String signal) {
-		this.signal = signal;
+	public void setStLog(String stLog) {
+		this.stLog = stLog;
 	}
-	public String getSlCode() {
-		return slCode;
+	public String getStCode() {
+		return stCode;
 	}
-	public void setSlCode(String slCode) {
-		this.slCode = slCode;
+	public void setStCode(String stCode) {
+		this.stCode = stCode;
 	}
-	public String getSlName() {
-		return slName;
+	public String getStPassword() {
+		return stPassword;
 	}
-	public void setSlName(String slName) {
-		this.slName = slName;
+	public void setStPassword(String stPassword) {
+		this.stPassword = stPassword;
 	}
 	public String getAccessType() {
 		return accessType;

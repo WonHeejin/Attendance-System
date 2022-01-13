@@ -6,11 +6,13 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script>
+
+
 function sendSign(pStCode,pSsCode,action){
 	const form=makeForm("",action,"post");
 	const data="stCode="+encodeURIComponent(pStCode)
 				+"ssCode="+encodeURIComponent(pSsCode);
-	getAjaxJson("insSign",data);
+	getAjaxJson(action,data);
 }
 
 function getMyInfo(pStCode){
@@ -184,18 +186,18 @@ function getAjaxJson(action,data){
 	<div id="everythings">
 		<div id="top">
 			<div id="academy">KSWL</div>
-			<div id="loginInfo">[성기준]님 환영합니다! 당신은 [학생]입니다.</div>
-			<div type="button" id="logOut">로그아웃</div>
+			<div id="loginInfo">[${accessInfo[0].stName}]님 환영합니다! 당신은 [학생]입니다.</div>
+			<div type="button" id="logOut" onClick="accessOut()">로그아웃</div>
 		</div>
 		<div id="center">
 			<div id="leftside"></div>
 			<div id="info">
 				<div id="title">임배디드를 활용한 개발자 양성과정</div>
 				<div id="btn">
-					<div id="startClass" onClick="sendSign('','2002')">입실</div>
-					<div id="middleSign" onClick="sendSign('','3003')">중간신호</div>
-					<div id="outClass" onClick="sendSign('','4004')">외출</div>
-					<div id="endClass" onClick="sendSign('','5005')">퇴실</div>
+					<div id="startClass" onClick="sendSign('','2002','startSign')">입실</div>
+					<div id="middleSign" onClick="sendSign('','3003','middleSign')">중간신호</div>
+					<div id="outClass" onClick="sendSign('','4004','outSign')">외출</div>
+					<div id="endClass" onClick="sendSign('','5005','endSign')">퇴실</div>
 					<div id="myInfo" onClick="getMyInfo('')">출결 상세 내역</div>
 				</div>
 			</div>

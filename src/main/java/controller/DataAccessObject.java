@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 
 import beans.EmployeeBean;
+import beans.StudyListBean;
 
 public class DataAccessObject {
 	protected PreparedStatement pstmt;
@@ -18,6 +19,38 @@ public class DataAccessObject {
 		this.rs = null;
 	}
 	
+	 public ArrayList<StudyListBean> getclassInfo(Connection connection){
+		 	ArrayList<StudyListBean> slList = new ArrayList<StudyListBean>();
+			ResultSet rs = null;
+			
+			String sql = "SELECT SL_CODE, SL_NAME FROM SL";
+			
+			try {
+				this.pstmt = connection.prepareStatement(sql);
+				
+				rs = this.pstmt.executeQuery();
+				while(rs.next()) {
+					
+					StudyListBean slb = new StudyListBean();
+					slb.setSlCode(rs.getNString("SL_CODE"));
+					slb.setSlName(rs.getNString("SL_NAME"));
+					
+					
+					slList.add(slb);
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					if(!rs.isClosed()) rs.close();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+				
+			}
+			return slList;
+	 }
+	
 	 public ArrayList<EmployeeBean> getLogInfo(Connection connection, EmployeeBean log){
 			ArrayList<EmployeeBean> list = new ArrayList<EmployeeBean>();
 			ResultSet rs = null;
@@ -25,7 +58,7 @@ public class DataAccessObject {
 			String sql = "SELECT EMCODE, EMNAME, ACCESSTIME FROM ACCESSINFO "
 					+"WHERE ACCESSTIME = (SELECT TO_CHAR(MAX(AH_ACCESSTIME), 'YYYY-MM-DD HH24:MI:SS') FROM AH"
 					+"                     WHERE AH_EMCODE=?)";
-
+			
 			try {
 				this.pstmt = connection.prepareStatement(sql);
 				this.pstmt.setNString(1, log.getEmCode());
@@ -38,10 +71,10 @@ public class DataAccessObject {
 					em.setEmCode(rs.getNString("EMCODE"));
 					em.setEmName(rs.getNString("EMNAME"));
 					em.setDate(rs.getNString("ACCESSTIME"));
-
+					
+					
 					list.add(em);
 				}
-
 			}catch(Exception e) {
 				e.printStackTrace();
 			}finally {
@@ -51,8 +84,6 @@ public class DataAccessObject {
 					e.printStackTrace();
 				}
 			}
-
-
 			return list;
 		}
 	 
@@ -86,7 +117,6 @@ public class DataAccessObject {
 		 public void setTransaction(Connection connection, boolean tran) {
 
 			try {
-				
 				if(connection!=null && !connection.isClosed()) {
 					if(tran) {connection.commit();
 					}else {
@@ -102,7 +132,7 @@ public class DataAccessObject {
 			/* Close Connection */
 		 public void closeConnection (Connection connection) {
 			try {
-				if(pstmt!=null&&!pstmt.isClosed()) {pstmt.close();}
+				if(!pstmt.isClosed()) {pstmt.close();}
 				if(connection!=null && !connection.isClosed()) {
 					connection.close();
 				}
