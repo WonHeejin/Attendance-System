@@ -41,24 +41,24 @@ public class SignalManagement {
 		if(dao.insSignal(conn, emp)) {
 			tran=true;
 			if(this.req.getParameter("signal").equals("2002")) {
-				data=new Gson().toJson("입실신호 전송 완료");
+				data="입실신호 전송 완료";
 			}else if(this.req.getParameter("signal").equals("3003")) {
-				data=new Gson().toJson("중간신호 전송 완료");
+				data="중간신호 전송 완료";
 			}else if(this.req.getParameter("signal").equals("4004")) {
-				data=new Gson().toJson("외출신호 전송 완료");
+				data="외출신호 전송 완료";
 			}else {
-				data=new Gson().toJson("퇴실신호 전송 완료");
+				data="퇴실신호 전송 완료";
 			}
 			
 		}else {
 			if(this.req.getParameter("signal").equals("2002")) {
-				data=new Gson().toJson("입실신호 전송 실패");
+				data="입실신호 전송 실패";
 			}else if(this.req.getParameter("signal").equals("3003")) {
-				data=new Gson().toJson("중간신호 전송 실패");
+				data="중간신호 전송 실패";
 			}else if(this.req.getParameter("signal").equals("4004")) {
-				data=new Gson().toJson("외출신호 전송 실패");
+				data="외출신호 전송 실패";
 			}else {
-				data=new Gson().toJson("퇴실신호 전송 실패");
+				data="퇴실신호 전송 실패";
 			}
 		}
 		
