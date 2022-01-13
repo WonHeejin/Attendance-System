@@ -14,7 +14,7 @@ import beans.ActionBean;
 import list.ListManagement;
 
 
-@WebServlet("/SSI")
+@WebServlet({"/SSI","/SLM"})
 public class Management extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -51,6 +51,9 @@ public class Management extends HttpServlet {
 			if(jobCode.equals("SSI")) {
 				log = new InfoManagement(req);
 				action = log.backController(1);
+			}else if(jobCode.equals("SLM")) {
+				log = new InfoManagement(req);
+				action = log.backController(2);
 			}
 		}else {
 

@@ -89,7 +89,7 @@ public class LoginManagement {
 
 		dao.setTransaction(conn, tran);
 		dao.modifyTranStatus(conn, true);
-		dao.clossConnection(conn);
+		dao.closeConnection(conn);
 
 		return action;
 	}
@@ -117,7 +117,7 @@ public class LoginManagement {
 
 		dao.setTransaction(conn, tran);
 		dao.modifyTranStatus(conn, true);
-		dao.clossConnection(conn);
+		dao.closeConnection(conn);
 
 		return action;
 	}

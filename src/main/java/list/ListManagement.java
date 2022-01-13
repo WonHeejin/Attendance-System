@@ -50,7 +50,7 @@ public class ListManagement {
 		
 		action.setPage("statesForManager.jsp");
 		action.setRedirect(false);
-		dao.clossConnection(conn);
+		dao.closeConnection(conn);
 		
 		return action;
 	}

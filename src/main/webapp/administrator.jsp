@@ -211,7 +211,7 @@ clear:both;
 					<div id="middleSign">중간신호</div>
 					<div id="outClass">외출</div>
 					<div id="endClass">퇴실</div>
-					<div id="classManagement">수업 관리</div>
+					<div id="classManagement" onClick="moveService('SLM', '${accessInfo[0].emCode}')">수업 관리</div>
 					<div id="studentManagement" onClick="moveService('SSI', '${accessInfo[0].emCode}')">회원 등록</div>
 					<div id="myInfo" onClick="moveService('SFM','${accessInfo[0].emCode}')">학생 출결 내역</div>
 				</div>

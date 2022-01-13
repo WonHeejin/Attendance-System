@@ -13,17 +13,17 @@ import javax.servlet.http.HttpSession;
 
 
 
-@WebServlet("/maxCode")
+@WebServlet({"/maxCode","/GSL", "/GSMC"})
 public class AjaxController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    
-    public AjaxController() {
-        super();
-       
-    }
 
-	
+
+	public AjaxController() {
+		super();
+
+	}
+
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		this.doAjax(request, response);
 	}
@@ -32,21 +32,25 @@ public class AjaxController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		this.doAjax(request, response);
 	}
-	
+
 	private void doAjax(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		String ajaxData = null;
 		String jobCode = req.getRequestURI().substring(req.getContextPath().length()+1);
 
 		HttpSession session = req.getSession();
 		InfoManagement ig = null;
-		
+
 
 		if(session.getAttribute("emCode") != null) {
 			if(jobCode.equals("maxCode")) {
 				ig = new InfoManagement(req);
 				ajaxData = ig.backController("2");
-			}else {
-
+			}else if(jobCode.equals("GSL")){
+				ig = new InfoManagement(req);
+				ajaxData = ig.backController("3");
+			}else if(jobCode.equals("GSMC")){
+				ig = new InfoManagement(req);
+				ajaxData = ig.backController("4");
 			}
 			res.setContentType("text/html; charset=utf-8");
 			PrintWriter p = res.getWriter();
