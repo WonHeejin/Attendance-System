@@ -7,7 +7,30 @@ public class EmployeeBean {
 	private String emBwCode;
 	private String date;
 	private String accessType;
+	private String slCode;
+	private String slName;
+	private String signal;
 	
+	
+	
+	public String getSignal() {
+		return signal;
+	}
+	public void setSignal(String signal) {
+		this.signal = signal;
+	}
+	public String getSlCode() {
+		return slCode;
+	}
+	public void setSlCode(String slCode) {
+		this.slCode = slCode;
+	}
+	public String getSlName() {
+		return slName;
+	}
+	public void setSlName(String slName) {
+		this.slName = slName;
+	}
 	public String getAccessType() {
 		return accessType;
 	}

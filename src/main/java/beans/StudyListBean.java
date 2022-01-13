@@ -22,7 +22,6 @@ public class StudyListBean {
 	public void setSlCrName(String slCrName) {
 		this.slCrName = slCrName;
 	}
-	
 	public String getSlCode() {
 		return slCode;
 	}

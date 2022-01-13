@@ -12,7 +12,6 @@ function sendSign(pStCode,pSsCode,action){
 				+"ssCode="+encodeURIComponent(pSsCode);
 	getAjaxJson(action,data);
 }
-
 function getMyInfo(pStCode){
 	const form=makeForm("","getMyInfo","post");
 	const stCode=makeInputElement("hidden","emCode",pStCode,"");
@@ -39,13 +38,11 @@ function getAjaxJson(action,data){
 	width: 100%;
 	height: 100%;
 }
-
 #top {
 	width: 100%;
 	height: 5%;
 	background-color: #BDBDBD;
 }
-
 #academy {
 	text-align: center;
 	float: left;
@@ -55,7 +52,6 @@ function getAjaxJson(action,data){
 	font-size: 25pt;
 	font-weight: 800;
 }
-
 #loginInfo {
 	padding: 0.5% 0.5%;
 	text-align: right;
@@ -64,21 +60,17 @@ function getAjaxJson(action,data){
 	height: 60%;
 	text-align: right;
 }
-
 #logOut {
 	margin: 0.5% 0.5% 0.5% 0%;
 }
-
 #center {
 	width: 100%;
 	height: 90%;
 }
-
 #userInput {
 	width: 100%;
 	height: 10%;
 }
-
 #square {
 	float: left;
 	width: 90%;
@@ -86,7 +78,6 @@ function getAjaxJson(action,data){
 	border: 2px solid #000000;
 	width: 90%;
 }
-
 #column {
 	font-weight: 700;
 	border-top: 2px solid #353535;
@@ -95,74 +86,63 @@ function getAjaxJson(action,data){
 	width: 100%;
 	height: 5%;
 }
-
 #no {
 	padding: 0.6% 0%;
 	float: left;
 	width: 12.5%;
 	height: 50%;
 }
-
 #code {
 	padding: 0.6% 0%;
 	float: left;
 	width: 12.5%;
 	height: 50%;
 }
-
 #name {
 	padding: 0.6% 0%;
 	float: left;
 	width: 12.5%;
 	height: 50%;
 }
-
 #teacher {
 	padding: 0.6% 0%;
 	float: left;
 	width: 12.5%;
 	height: 50%;
 }
-
 #class {
 	padding: 0.6% 0%;
 	float: left;
 	width: 12.5%;
 	height: 50%;
 }
-
 #start {
 	padding: 0.6% 0%;
 	float: left;
 	width: 12.5%;
 	height: 50%;
 }
-
 #end {
 	padding: 0.6% 0%;
 	float: left;
 	width: 12.5%;
 	height: 50%;
 }
-
 #space {
 	padding: 0.6% 0%;
 	float: left;
 	width: 12.5%;
 	height: 50%;
 }
-
 #list {
 	width: 100%;
 	height: 85%;
 	overflow-y: scroll;
 }
-
 #bottom {
 	width: 100%;
 	height: 5%;
 }
-
 .studyList.no {
 	text-align: center;
 	padding: 0.6% 0%;
@@ -170,7 +150,6 @@ function getAjaxJson(action,data){
 	width: 12.6%;
 	height: 50%;
 }
-
 .studyList.slCode {
 	text-align: center;
 	padding: 0.6% 0%;
@@ -178,7 +157,6 @@ function getAjaxJson(action,data){
 	width: 12.65%;
 	height: 50%;
 }
-
 .studyList.slName {
 	text-align: center;
 	padding: 0.6% 0%;
@@ -186,7 +164,6 @@ function getAjaxJson(action,data){
 	width: 12.6%;
 	height: 50%;
 }
-
 .studyList.slEmName {
 	text-align: center;
 	padding: 0.6% 0%;
@@ -194,7 +171,6 @@ function getAjaxJson(action,data){
 	width: 12.65%;
 	height: 50%;
 }
-
 .studyList.slCrName {
 	text-align: center;
 	padding: 0.6% 0%;
@@ -202,7 +178,6 @@ function getAjaxJson(action,data){
 	width: 12.55%;
 	height: 50%;
 }
-
 .studyList.slStartDate {
 	text-align: center;
 	padding: 0.6% 0%;
@@ -210,7 +185,6 @@ function getAjaxJson(action,data){
 	width: 12.6%;
 	height: 50%;
 }
-
 .studyList.slEndDate {
 	text-align: center;
 	padding: 0.6% 0%;
@@ -218,13 +192,11 @@ function getAjaxJson(action,data){
 	width: 12.65%;
 	height: 50%;
 }
-
 .studyList.mod {
 	margin: 0.4% 0.6% 0.6% 0%;
 	text-align: center;
 	float: left;
 }
-
 .studyList.remove {
 	margin: 0.4%;
 	text-align: center;
@@ -235,7 +207,6 @@ function getAjaxJson(action,data){
 <script>
 function getAjaxJson(action, data, fn) {
 	const ajax = new XMLHttpRequest();
-
 	ajax.onreadystatechange = function() {
 		if (ajax.readyState == 4 && ajax.status == 200) {
 			window[fn](ajax.responseText);
@@ -246,15 +217,12 @@ function getAjaxJson(action, data, fn) {
 			"application/x-www-form-urlencoded");
 	ajax.send(data);
 }
-
 const itemName=["no","slCode","slName","slEmName","slCrName","slStartDate","slEndDate"]
 const btnName=["mod","remove"]
 let no = 0;
-
 function StudyListCtl(){
 			getAjaxJson("GSL", "", "addStudyList");
 }
-
 function insCtl(){
 	const slCode=document.ElementById("slCode").value;
 	const slName=document.ElementById("slName").value;
@@ -266,7 +234,6 @@ function insCtl(){
 	alert("등록을 진행하시겠습니까?");
 	
 }
-
 function inputChange(){
 	let btn = document.getElementsByName("inputSpace");
 	for(idx=0;idx<btn.length;idx++){
@@ -281,15 +248,12 @@ function inputChange(){
 	
 	
 }
-
 function getStudyListMaxCode(){
 	getAjaxJson("GSMC","","setMaxCode");
 }
-
 function settMaxCode(jsonData){
 	
 }
-
 /* func createDiv */
 function createDiv(name, className){
 	const div = document.createElement("div"); // <div></div>
@@ -297,7 +261,6 @@ function createDiv(name, className){
 	div.setAttribute("class", className); // <div name="" class=""></div>
 	return div;
 }
-
 function createChange(name, className){
 	const Button = document.createElement("input"); // <div></div>
 	Button.setAttribute("value", "수정");// <div name=""></div>
@@ -306,7 +269,6 @@ function createChange(name, className){
 	Button.setAttribute("class", className); // <div name="" class=""></div>
 	return Button;
 }
-
 function createRemove(name, className){
 	const Button = document.createElement("input"); // <div></div>
 	Button.setAttribute("value", "삭제");// <div name=""></div>
@@ -315,8 +277,6 @@ function createRemove(name, className){
 	Button.setAttribute("class", className); // <div name="" class=""></div>
 	return Button;
 }
-
-
 function addStudyList(data){
 	let jsonData = JSON.parse(data);
 	for(num=0;num<jsonData.length;num++){

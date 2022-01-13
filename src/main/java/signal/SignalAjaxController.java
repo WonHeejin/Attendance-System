@@ -1,4 +1,4 @@
-package management;
+package signal;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,22 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import management.InfoManagement;
 
 
-
-@WebServlet({"/maxCode","/regMember","/StudyList","/getStList"
-			,"/GSL", "/GSMC"})
-public class AjaxController extends HttpServlet {
+@WebServlet("/insSign")
+public class SignalAjaxController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    
-    public AjaxController() {
+   
+    public SignalAjaxController() {
         super();
        
     }
 
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		this.doAjax(request, response);
 	}
 
@@ -39,28 +37,13 @@ public class AjaxController extends HttpServlet {
 		String jobCode = req.getRequestURI().substring(req.getContextPath().length()+1);
 
 		HttpSession session = req.getSession();
-		InfoManagement ig = null;
+		SignalManagement sig = null;
 		
 
 		if(session.getAttribute("emCode") != null) {
-			if(jobCode.equals("maxCode")) {
-				ig = new InfoManagement(req);
-				ajaxData = ig.backController("2");
-			}else if(jobCode.equals("regMember")) {
-				ig = new InfoManagement(req);
-				ajaxData = ig.backController("3");
-			}else if(jobCode.equals("StudyList")) {
-				ig = new InfoManagement(req);
-				ajaxData = ig.backController("4");
-			}else if(jobCode.equals("getStList")) {
-				ig = new InfoManagement(req);
-				ajaxData = ig.backController("5");
-			}else if(jobCode.equals("GSL")){
-				ig = new InfoManagement(req);
-				ajaxData = ig.backController("6");
-			}else if(jobCode.equals("GSMC")){
-				ig = new InfoManagement(req);
-				ajaxData = ig.backController("7");
+			if(jobCode.equals("insSign")) {
+				sig = new SignalManagement(req);
+				ajaxData = sig.backController("2");
 			}else {
 
 			}
@@ -69,4 +52,5 @@ public class AjaxController extends HttpServlet {
 			p.write(ajaxData);
 		}
 	}
+
 }

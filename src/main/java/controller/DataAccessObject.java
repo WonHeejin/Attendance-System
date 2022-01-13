@@ -29,8 +29,9 @@ public class DataAccessObject {
 			try {
 				this.pstmt = connection.prepareStatement(sql);
 				this.pstmt.setNString(1, log.getEmCode());
-				rs = this.pstmt.executeQuery();
 				
+
+				rs = this.pstmt.executeQuery();
 				while(rs.next()) {
 					
 					EmployeeBean em = new EmployeeBean();
@@ -85,6 +86,7 @@ public class DataAccessObject {
 		 public void setTransaction(Connection connection, boolean tran) {
 
 			try {
+				
 				if(connection!=null && !connection.isClosed()) {
 					if(tran) {connection.commit();
 					}else {
@@ -100,7 +102,7 @@ public class DataAccessObject {
 			/* Close Connection */
 		 public void closeConnection (Connection connection) {
 			try {
-				if(!pstmt.isClosed()) {pstmt.close();}
+				if(pstmt!=null&&!pstmt.isClosed()) {pstmt.close();}
 				if(connection!=null && !connection.isClosed()) {
 					connection.close();
 				}

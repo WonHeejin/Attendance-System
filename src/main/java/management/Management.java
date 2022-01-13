@@ -54,7 +54,7 @@ public class Management extends HttpServlet {
 			}else if(jobCode.equals("SLM")) {
 				log = new InfoManagement(req);
 				action = log.backController(2);
-			}
+			}else {}
 		}else {
 
 		}
