@@ -47,6 +47,9 @@ public class InfoManagement {
 		case "4":
 			data = getStudyList();
 			break;	
+		case "5":
+			data = getStudentList();
+			break;	
 		}
 		
 		return data;
@@ -116,11 +119,16 @@ public class InfoManagement {
 		
 		DataAccessObject dao=new DataAccessObject();
 		Connection conn=dao.getConnection();
-		data=new Gson().toJson(dao.getSl(conn));
-		
+		data=new Gson().toJson(dao.getSl(conn));		
 		dao.clossConnection(conn);
-		
-		
+		return data;
+	}
+	private String getStudentList() {
+		String data=null;
+		DataAccessObject dao=new DataAccessObject();
+		Connection conn=dao.getConnection();
+		data=new Gson().toJson(dao.getSs(conn,this.req.getParameter("slCode")));		
+		dao.clossConnection(conn);
 		return data;
 	}
 }

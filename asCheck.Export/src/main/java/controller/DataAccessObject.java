@@ -86,6 +86,7 @@ public class DataAccessObject {
 		 public void setTransaction(Connection connection, boolean tran) {
 
 			try {
+				
 				if(connection!=null && !connection.isClosed()) {
 					if(tran) {connection.commit();
 					}else {
@@ -101,6 +102,7 @@ public class DataAccessObject {
 			/* Close Connection */
 		 public void clossConnection (Connection connection) {
 			try {
+				if(pstmt!=null&&!pstmt.isClosed()) {pstmt.close();}
 				if(connection!=null && !connection.isClosed()) {
 					connection.close();
 				}

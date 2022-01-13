@@ -89,4 +89,21 @@ class DataAccessObject extends controller.DataAccessObject{
 		}catch(SQLException e) {e.printStackTrace();}
 		return list;
 	}
+	public ArrayList<EmployeeBean> getSs(Connection conn,String slCode) {
+		EmployeeBean emp=null;
+		ArrayList<EmployeeBean> list=new ArrayList<EmployeeBean>();
+		String query="SELECT ST_CODE, ST_NAME FROM ST WHERE ST_SLCODE=?";
+		try {
+			this.pstmt=conn.prepareStatement(query);
+			this.pstmt.setNString(1, slCode);
+			this.rs=this.pstmt.executeQuery();
+			while(this.rs.next()) {
+				emp= new EmployeeBean();
+				emp.setEmCode(this.rs.getNString("ST_CODE"));
+				emp.setEmName(this.rs.getNString("ST_NAME"));
+				list.add(emp);
+			}
+		}catch(SQLException e) {e.printStackTrace();}
+		return list;
+	}
 }
