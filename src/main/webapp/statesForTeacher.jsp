@@ -5,53 +5,75 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script> 
+<script>
+	function getAjaxJson(action, data, fn) {
+		const ajax = new XMLHttpRequest();
 
-function attendList(){
-	let td,tr;
-	for(idx=0;idx<4;idx++){
-		tr=createTrTd("tr");
-		for(colIdx=0;colIdx<2;colIdx++){
-			td=createTrTd("td");
-			td.innerHTML=(colIdx==0)?"김이박":"출석";
-			tr.appendChild(td);
-		}
-		attendance.appendChild(tr);	
+		ajax.onreadystatechange = function() {
+			if (ajax.readyState == 4 && ajax.status == 200) {
+				if (fn != "") {
+					window[fn](JSON.parse(ajax.responseText));
+				} else {
+					alert(ajax.responseText);
+				}
+			}
+		};
+		ajax.open("post", action, true);
+		ajax.setRequestHeader("Content-type",
+				"application/x-www-form-urlencoded");
+		ajax.send(data);
 	}
-}
+	function search(slCode) {
+		const date = document.getElementsByName("date")[0].value;
+		alert(date);
+		alert(date + ":" + slCode);
+		const data = "date=" + encodeURIComponent(date) + "&slCode="
+				+ encodeURIComponent(slCode);
+		getAjaxJson("getTHforT", data, "attendList");
+	}
+	function attendList(data) {
+		let td, tr;
+		for (idx = 0; idx < data.length; idx++) {
+			tr = createTrTd("tr");
+			for (colIdx = 0; colIdx < 2; colIdx++) {
+				td = createTrTd("td");
+				td.innerHTML = (colIdx == 0) ? data[idx].thStName
+						: data[idx].thName;
+				tr.appendChild(td);
+			}
+			attendance.appendChild(tr);
+		}
+	}
 
-function createTrTd(Trd){
-	const trd=document.createElement(Trd);
-	return trd;
-}
+	function createTrTd(Trd) {
+		const trd = document.createElement(Trd);
+		return trd;
+	}
 </script>
 <style>
-#logo {
-	font-size: 30pt;
-	font-weight: 800;
-	float: left;
-}
-
-#info {
-	width: 88%;
-	height: 25px;
-	line-height: 25px;
-	background-color:;
-	border: 2px solid #81BA7B;
-	color:;
-	font-size: 10pt;
-	text-align: right;
+#middle {
+position: absolute; top:10%; left:50%; transform: translate(-50%, -50%);
+	clear: both;
 	float: right;
+	width: 30%;
+	margin: 100px 700px 0px 0px;
 }
 
-#middle {clear:both;float:right;width:20%;margin:100px 700px 0px 0px;}
-#bottom {clear:both;float:right;margin:0px 200px;}
+#bottom {
+	clear: both;
+	float: right;
+	margin: 0px 200px;
+}
+table {
+	position: absolute; top:30%; left:50%; transform: translate(-50%, -50%);
+	width:50%; 
+	
+}
 table.type01 {
 	border-collapse: collapse;
 	text-align: left;
 	line-height: 1.5;
 	margin: 20px 10px;
-	
 }
 
 table.type01 th {
@@ -68,36 +90,80 @@ table.type01 td {
 	vertical-align: top;
 	border: 1px solid #ccc;
 }
+#everythings {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+#top {
+	width: 100%;
+	height: 5%;
+	background-color: #BDBDBD;
+}
+
+#academy {
+	text-align: center;
+	float: left;
+	width: 5%;
+	height: 100%;
+	color: #FF00DD;
+	font-size:19pt;
+}
+
+#loginInfo {
+	padding : 0.4% 1%;
+	text-align : right;
+	float: left;
+	width: 86.5%;
+	height: 60%;
+}
+
+#logOut {
+	padding:0.2% 0%;
+	margin:0.1% 0%;
+	background-color: #EAEAEA;
+	border: 1px solid #000000;
+	text-align: center;
+	float: left;
+	width: 5%;
+	height: 63%;
+}
 
 </style>
 </head>
 <body>
-	<div id="logo">ICIA</div>
-	<div id="info">
-		~님 환영합니다! 귀하의 등급은 선생님입니다. <input type="button" class="btn"
-			onClick="accessOut()" value="로그아웃" />
+	<div id="everythings">
+		<div id="top">
+			<div id="academy">KSWL</div>
+			<div id="loginInfo">[${accessInfo[0].emName}]님 환영합니다! 당신은[선생님]입니다.</div>
+			<div type="button" id="logOut"
+				onClick="accessOut('${check}','${accessInfo[0].emCode}')">로그아웃</div>
+			<input type="hidden" name="emCode" value="${accessInfo[0].emCode}" />
+			<input type="hidden" name="emCode" value="${slInfo.slCode}" />
+		</div>
+		<div id="middle">
+			<span>날짜선택</span> <span><input name="date" type="date">
+				<input type="button" value="조회"
+				onClick="search('${slInfo.slCode}','${accessInfo[0].emCode}')">
+			</span>
+		</div>
+		<div id="bottom">
+			<table class="type01">
+				<thead>
+					<tr>
+						<th>학생이름</th>
+						<th>출결상태</th>
+					</tr>
+				</thead>
+				<tbody id="attendance">
+				</tbody>
+			</table>
+		</div>
+
 	</div>
 
-	<div id="middle">	 
-		<span>날짜선택</span> 
-		<span><input type="month">
-			<input type="button" value="조회" onClick="attendList()">
-		</span>
-	</div>
-	<div id="bottom">
-		<table class="type01">
-		<thead>
-			<tr>
-				<th>학생이름</th>
-				<th>출결상태</th>
-			</tr>
-		</thead>
-		 <tbody id="attendance">
-		 	
-		 		
-		</tbody>
-	</table>
-		
-	</div>
+
+
 </body>
 </html>

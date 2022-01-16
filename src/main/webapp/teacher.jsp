@@ -4,32 +4,44 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <title>Insert title here</title>
+<script src="resource/resource.js"></script>
 <script>
-function sendSign(pEmCode,pSsCode,action){
-	const form=makeForm("",action,"post");
-	const data="emCode="+encodeURIComponent(pEmCode)
-				+"ssCode="+encodeURIComponent(pSsCode);
-	getAjaxJson(action,data);
+function accessOut(check,emCode){
+	location.href = "AccessOut?emCode=" + emCode + "&people=" + check;
+}
+function sendSignal(slCode,signal,pEmCode){
+	const stslcode=document.getElementById("stslcode");
+	const data="signal="+encodeURIComponent(signal)
+				+"&emCode="+encodeURIComponent(pEmCode)
+				+"&slCode="+encodeURIComponent(slCode);
+	getAjaxJson("insSign",data,"");
 }
 
 function getMyInfo(pEmCode){
-	const form=makeForm("","getMyInfo","post");
+	alert(pEmCode);
+	const form=makeForm("","SFT","post");
 	const emCode=makeInputElement("hidden","emCode",pEmCode,"");
 	form.appendChild(emCode);
 	document.body.appendChild(form);
 	form.submit();
 }
-function getAjaxJson(action,data){
+function getAjaxJson(action, data, fn){
 	const ajax = new XMLHttpRequest();
-		ajax.onreadystatechange = function() {
-			if ( ajax.readyState== 4 && ajax.status == 200) {			
-				alert(JSON.parse(ajax.responseText));						
+	
+	ajax.onreadystatechange = function(){
+		if(ajax.readyState == 4 && ajax.status == 200){
+			if(fn!=""){
+				window[fn](JSON.parse(ajax.responseText));	
+			}else{
+				alert(ajax.responseText);
 			}
-		};
-		ajax.open("post", action, true);
-		ajax.setRequestHeader("Content-type","application/x-www-form-urlencoded");	
-		ajax.send(data);
+		}
+	};	
+	ajax.open("post", action, true);
+	ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	ajax.send(data);
 }
 </script>
 </head>
@@ -184,19 +196,20 @@ function getAjaxJson(action,data){
 	<div id="everythings">
 		<div id="top">
 			<div id="academy">KSWL</div>
-			<div id="loginInfo">[임훈]님 환영합니다! 당신은 [선생]입니다.</div>
-			<div type="button" id="logOut">로그아웃</div>
+			<div id="loginInfo">[${accessInfo[0].emName}]님 환영합니다! 당신은 [선생님]입니다.</div>
+			<div type="button" id="logOut" onClick="accessOut('${check}','${accessInfo[0].emCode}')">로그아웃</div>
+			<input type="hidden" name="emCode" value="${accessInfo[0].emCode}"/>
 		</div>
 		<div id="center">
 			<div id="leftside"></div>
 			<div id="info">
-				<div id="title">임배디드를 활용한 개발자 양성과정</div>
+				<div id="title">${slInfo.slName}</div>
 				<div id="btn">
-					<div id="startClass" onClick="sendSign('','2002','startSign')">입실</div>
-					<div id="middleSign" onClick="sendSign('','3003','middleSign')">중간신호</div>
-					<div id="outClass" onClick="sendSign('','4004','outSign')">외출</div>
-					<div id="endClass" onClick="sendSign('','5005','endSign')">퇴실</div>
-					<div id="myInfo" onClick="getMyInfo('')">학생 출결 내역</div>
+					<div id="startClass" onClick="sendSignal('${slInfo.slCode}','2002','${accessInfo[0].emCode}')">입실</div>
+					<div id="middleSign" onClick="sendSignal('${slInfo.slCode}','3003','${accessInfo[0].emCode}')">중간신호</div>
+					<div id="outClass" onClick="sendSignal('${slInfo.slCode}','4004','${accessInfo[0].emCode}')">외출</div>
+					<div id="endClass" onClick="sendSignal('${slInfo.slCode}','5005','${accessInfo[0].emCode}')">퇴실</div>
+					<div id="myInfo" onClick="getMyInfo('${accessInfo[0].emCode}')">학생 출결 내역</div>
 				</div>
 			</div>
 			<div id="rightside"></div>

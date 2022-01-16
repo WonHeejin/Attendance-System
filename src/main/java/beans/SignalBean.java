@@ -5,7 +5,7 @@ public class SignalBean {
 	String slCode;
 	String emCode;
 	String ssCode;
-	
+
 	public String getCsData() {
 		return csData;
 	}

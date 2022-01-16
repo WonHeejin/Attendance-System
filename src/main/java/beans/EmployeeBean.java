@@ -7,15 +7,21 @@ public class EmployeeBean {
 	private String emBwCode;
 	private String date;
 	private String accessType;
+	private String slCode;
+	private String slName;
+	private String signal;
 	private String stCode;
 	private String stPassword;
 	private String stLog;
+	private String stName;
 	
-	public String getStLog() {
-		return stLog;
+	
+	
+	public String getStName() {
+		return stName;
 	}
-	public void setStLog(String stLog) {
-		this.stLog = stLog;
+	public void setStName(String stName) {
+		this.stName = stName;
 	}
 	public String getStCode() {
 		return stCode;
@@ -28,6 +34,30 @@ public class EmployeeBean {
 	}
 	public void setStPassword(String stPassword) {
 		this.stPassword = stPassword;
+	}
+	public String getStLog() {
+		return stLog;
+	}
+	public void setStLog(String stLog) {
+		this.stLog = stLog;
+	}
+	public String getSignal() {
+		return signal;
+	}
+	public void setSignal(String signal) {
+		this.signal = signal;
+	}
+	public String getSlCode() {
+		return slCode;
+	}
+	public void setSlCode(String slCode) {
+		this.slCode = slCode;
+	}
+	public String getSlName() {
+		return slName;
+	}
+	public void setSlName(String slName) {
+		this.slName = slName;
 	}
 	public String getAccessType() {
 		return accessType;

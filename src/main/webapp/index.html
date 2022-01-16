@@ -1,4 +1,4 @@
-<!DOCTYPEhtml>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -17,13 +17,13 @@ function checkOnlyOne(element) {
 }
 
 function authmanagement() {
-	let check = null;
 	/* 1. HTML 개체와의 연결 : name, id 속성 */
 	const form = document.getElementsByName("login")[0];
 	/* 2. 사용자 데이터의 수집 */
-	const userData = [document.getElementsByName("code")[0],
-			document.getElementsByName("password")[0]];
+	const userData = [ document.getElementsByName("code")[0],
+			document.getElementsByName("password")[0] ];
 	const message = [ "아이디 입력","패스워드 입력" ];
+	
 	/* 3. 유효성 검사 */
 	//if(!isEmpty(emsrcode)) {alert("상점코드 입력"); return;}
 	//if(!isEmpty(emcode)) {alert("직원코드 입력"); return;}
@@ -34,11 +34,10 @@ function authmanagement() {
 			return;
 		}
 	}
-	
+
 	/* 4. 서버 전송 */
 	form.submit();
-	
-	}
+}
 
 function isEmpty(obj){
 	let check = true;
@@ -88,12 +87,12 @@ table {
 
 
 			<tr>
-				<td id="iid">인천일보아카데미</td>
+				<td id="iid">KSWL아카데미</td>
 			</tr>
 
 
 			<tr>
-				<td><label><input id="student" type="checkbox" name="people"
+				<td><label><input id="student"type="checkbox" name="people"
 						value="1" onClick="checkOnlyOne(this)"> 학생</label> <label><input
 						id="teacher" type="checkbox" name="people" value="1000"
 						onClick="checkOnlyOne(this)"> 선생님</label> <label><input

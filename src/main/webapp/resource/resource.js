@@ -29,3 +29,10 @@ function makeInputElement(type, name, value, placeholder){
 	
 	return input;
 }
+function isEmpty(obj){
+	let check = true;
+	if(obj.value == ""){
+		check = false;
+	}
+	return check;
+}

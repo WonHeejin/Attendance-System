@@ -5,28 +5,37 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="resource/resource.js"></script>
 <script>
-
-
-function sendSign(pStCode,pSsCode,action){
-	const form=makeForm("",action,"post");
-	const data="stCode="+encodeURIComponent(pStCode)
-				+"ssCode="+encodeURIComponent(pSsCode);
-	getAjaxJson(action,data);
+function accessOut(check,stCode){
+	location.href = "AccessOut?stCode=" + stCode + "&people="+check;
+}
+function checkSign(pSlCode,pSsCode,pStCode){
+	alert(pSsCode);
+	const data="slCode="+encodeURIComponent(pSlCode)
+				+"&ssCode="+encodeURIComponent(pSsCode)
+				+"&stCode="+encodeURIComponent(pStCode);
+	getAjaxJson("checkSign",data,"");
 }
 
-function getMyInfo(pStCode){
-	const form=makeForm("","getMyInfo","post");
-	const stCode=makeInputElement("hidden","emCode",pStCode,"");
-	form.appendChild(emCode);
+function getMyInfo(pSlCode,pStCode){
+	const form=makeForm("","SFSt","post");
+	const stCode=makeInputElement("hidden","stCode",pStCode,"");
+	const slCode=makeInputElement("hidden","slCode",pSlCode,"");
+	form.appendChild(stCode);
+	form.appendChild(slCode);
 	document.body.appendChild(form);
 	form.submit();
 }
-function getAjaxJson(action,data){
+function getAjaxJson(action,data,fn){
 	const ajax = new XMLHttpRequest();
 		ajax.onreadystatechange = function() {
-			if ( ajax.readyState== 4 && ajax.status == 200) {			
-				alert(JSON.parse(ajax.responseText));						
+			if(ajax.readyState == 4 && ajax.status == 200){
+				if(fn!=""){
+					window[fn](JSON.parse(ajax.responseText));	
+				}else{
+					alert(ajax.responseText);
+				}
 			}
 		};
 		ajax.open("post", action, true);
@@ -187,18 +196,19 @@ function getAjaxJson(action,data){
 		<div id="top">
 			<div id="academy">KSWL</div>
 			<div id="loginInfo">[${accessInfo[0].stName}]님 환영합니다! 당신은 [학생]입니다.</div>
-			<div type="button" id="logOut" onClick="accessOut()">로그아웃</div>
+			<div type="button" id="logOut" onClick="accessOut('${check}','${accessInfo[0].stCode}')">로그아웃</div>
 		</div>
 		<div id="center">
 			<div id="leftside"></div>
 			<div id="info">
-				<div id="title">임배디드를 활용한 개발자 양성과정</div>
+				<div id="title">${slInfo.slName}</div>
+				<input type="hidden" name="slCode" value="${slInfo.slCode}"/>
 				<div id="btn">
-					<div id="startClass" onClick="sendSign('','2002','startSign')">입실</div>
-					<div id="middleSign" onClick="sendSign('','3003','middleSign')">중간신호</div>
-					<div id="outClass" onClick="sendSign('','4004','outSign')">외출</div>
-					<div id="endClass" onClick="sendSign('','5005','endSign')">퇴실</div>
-					<div id="myInfo" onClick="getMyInfo('')">출결 상세 내역</div>
+					<div id="startClass" onClick="checkSign('${slInfo.slCode}','2002','${accessInfo[0].stCode}')">입실</div>
+					<div id="middleSign" onClick="checkSign('${slInfo.slCode}','3003','${accessInfo[0].stCode}')">중간신호</div>
+					<div id="outClass" onClick="checkSign('${slInfo.slCode}','4004','${accessInfo[0].stCode}')">외출</div>
+					<div id="endClass" onClick="checkSign('${slInfo.slCode}','5005','${accessInfo[0].stCode}')">퇴실</div>
+					<div id="myInfo" onClick="getMyInfo('${slInfo.slCode}','${accessInfo[0].stCode}')">출결 상세 내역</div>
 				</div>
 			</div>
 			<div id="rightside"></div>

@@ -18,7 +18,6 @@ class DataAccessObject extends controller.DataAccessObject{
 			this.pstmt.setNString(1, log.getEmCode());
 			this.pstmt.setNString(2, log.getEmPassword());
 			this.pstmt.setNString(3, log.getEmBwCode());
-
 			rs = pstmt.executeQuery();
 
 			while(rs.next()) {
@@ -48,7 +47,6 @@ class DataAccessObject extends controller.DataAccessObject{
 		}
 		return result;
 	}
-	
 	boolean insAccessHistory1(Connection connection, EmployeeBean emp) {
 		boolean result = false;
 		String dml = "INSERT INTO AH(AH_EMCODE, AH_ACCESSTIME, AH_ACCESSTYPE) "
@@ -56,16 +54,13 @@ class DataAccessObject extends controller.DataAccessObject{
 		try {
 			this.pstmt = connection.prepareStatement(dml);
 			this.pstmt.setNString(1, emp.getEmCode());
-			this.pstmt.setNString(2, emp.getEmPassword());
+			this.pstmt.setNString(2, emp.getStLog());
 			result = this.converToBoolean(this.pstmt.executeUpdate());
 		}catch(Exception e) {
-			e.printStackTrace();
-		}finally {
-
-		}
+			e.printStackTrace();}
+	
 		return result;
 	}
-	
 	boolean isStudent(Connection connection, EmployeeBean emp) {
 		ResultSet rs = null;
 		boolean result = false;

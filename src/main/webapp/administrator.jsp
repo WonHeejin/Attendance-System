@@ -5,14 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src = "resource/resource.js"></script>
+<script src="resource/resource.js"></script>
 <script>
-function accessOut(emCode){
-	location.href = "AccessOut?emCode=" + emCode;
+function accessOut(check,emCode){
+	location.href = "AccessOut?emCode=" + emCode + "&people="+check;
 }
-
-
-
 function moveService(action, pEmCode){
 	const form = makeForm("", action, "post");
 	const emCode = makeInputElement("hidden", "emCode", pEmCode, "");
@@ -23,31 +20,46 @@ function moveService(action, pEmCode){
 	form.submit();
 }
 
-function sendSign(pEmCode,pSsCode,action){
-	const csData = document.getElementsByName("csData");
-	const slCode = document.getElementsByName("slCode");
-	const form=makeForm("",action,"post");
-	const data="emCode="+encodeURIComponent(pEmCode)
-				+"&ssCode="+encodeURIComponent(pSsCode);
-				
-	getAjaxJson(action,data);
-}
-
-function getAjaxJson(action,data){
+function getAjaxJson(action, data, fn){
 	const ajax = new XMLHttpRequest();
-		ajax.onreadystatechange = function() {
-			if ( ajax.readyState== 4 && ajax.status == 200) {			
-				alert(JSON.parse(ajax.responseText));						
+	
+	ajax.onreadystatechange = function(){
+		if(ajax.readyState == 4 && ajax.status == 200){
+			if(fn!=""){
+				window[fn](JSON.parse(ajax.responseText));	
+			}else{
+				alert(ajax.responseText);
 			}
-		};
-		ajax.open("post", action, true);
-		ajax.setRequestHeader("Content-type","application/x-www-form-urlencoded");	
-		ajax.send(data);
+		}
+	};	
+	ajax.open("post", action, true);
+	ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	ajax.send(data);
 }
-
-
-
-
+function getStudyList(){
+	getAjaxJson("StudyList","","makeStudyList");
+}
+function makeStudyList(data){
+	let option;
+	for(idx=0;idx<data.length;idx++){
+		option=createOption(data[idx].slCode);
+		option.innerHTML=data[idx].slName;
+		stslcode.appendChild(option);
+	}	
+}
+function createOption(value){
+	const option=document.createElement("option");
+	option.setAttribute("value",value);
+	return option;
+}
+function sendSignal(signal,pEmCode){
+	const stslcode=document.getElementById("stslcode");
+	const slCode=stslcode.options[stslcode.selectedIndex].value;
+	const data="signal="+encodeURIComponent(signal)
+				+"&emCode="+encodeURIComponent(pEmCode)
+				+"&slCode="+encodeURIComponent(slCode);
+	getAjaxJson("insSign",data,"");
+}
 </script>
 </head>
 <style>
@@ -69,12 +81,12 @@ function getAjaxJson(action,data){
 	width: 5%;
 	height: 100%;
 	color: #FF00DD;
-	font-size:19pt;
+	font-size: 19pt;
 }
 
 #loginInfo {
-	padding : 0.4% 1%;
-	text-align : right;
+	padding: 0.4% 1%;
+	text-align: right;
 	float: left;
 	width: 86.5%;
 	height: 60%;
@@ -82,8 +94,8 @@ function getAjaxJson(action,data){
 }
 
 #logOut {
-	padding:0.2% 0%;
-	margin:0.1% 0%;
+	padding: 0.2% 0%;
+	margin: 0.1% 0%;
 	background-color: #EAEAEA;
 	border: 1px solid #000000;
 	text-align: center;
@@ -125,15 +137,15 @@ function getAjaxJson(action,data){
 	width: 100%;
 	height: 37.8%;
 	font-weight: 900;
-	background-color : red;
 }
 
 #startClass {
-	border-radius:10px;
+	border-radius: 10px;
 	margin: 0% 1.2% 3% 0%;
 	font-size: 30pt;
 	padding: 2% 2%;
 	border: 4px solid #353535;
+	clear:both;
 	float: left;
 	text-align: center;
 	width: 19%;
@@ -141,7 +153,7 @@ function getAjaxJson(action,data){
 }
 
 #middleSign {
-	border-radius:10px;
+	border-radius: 10px;
 	margin: 0% 1.2% 3% 0%;
 	font-size: 25pt;
 	padding: 2.3% 2%;
@@ -153,7 +165,7 @@ function getAjaxJson(action,data){
 }
 
 #outClass {
-	border-radius:10px;
+	border-radius: 10px;
 	margin: 0% 1.2% 3% 0%;
 	font-size: 30pt;
 	padding: 2% 2%;
@@ -165,7 +177,7 @@ function getAjaxJson(action,data){
 }
 
 #endClass {
-	border-radius:10px;
+	border-radius: 10px;
 	margin: 0% 0% 3% 0%;
 	font-size: 30pt;
 	padding: 2% 2%;
@@ -177,8 +189,8 @@ function getAjaxJson(action,data){
 }
 
 #classManagement {
-clear:both;
-	border-radius:10px;
+	clear: both;
+	border-radius: 10px;
 	margin: 0% 1.3% 3% 0%;
 	font-size: 30pt;
 	padding: 2% 2%;
@@ -188,8 +200,9 @@ clear:both;
 	width: 44.1%;
 	height: 15%;
 }
+
 #studentManagement {
-	border-radius:10px;
+	border-radius: 10px;
 	margin: 0% 0% 3% 0%;
 	font-size: 30pt;
 	padding: 2% 2%;
@@ -201,7 +214,7 @@ clear:both;
 }
 
 #myInfo {
-	border-radius:10px;
+	border-radius: 10px;
 	font-size: 30pt;
 	padding: 2% 0%;
 	border: 4px solid #353535;
@@ -221,26 +234,40 @@ clear:both;
 	width: 100%;
 	height: 5%;
 }
+#stslcode {
+	float: left;
+	width: 25%;
+	height: 100%;
+}
 </style>
-<body>
+<body onLoad="getStudyList()">
 	<div id="everythings">
 		<div id="top">
 			<div id="academy">KSWL</div>
-			<div id="loginInfo">[${accessInfo[0].emName}]님 환영합니다! 당신은 [관리자]입니다.</div>
-			<div type="button" id="logOut" onClick = "accessOut('${accessInfo[0].emCode}')">로그아웃</div>
+			<div id="loginInfo">[${accessInfo[0].emName}]님 환영합니다! 당신은
+				[관리자]입니다.</div>
+				<div type="button" id="logOut" onClick = "accessOut('${check}','${accessInfo[0].emCode}')">로그아웃</div>
+			<input type="hidden" name="emCode" value="${accessInfo[0].emCode}"/>
 		</div>
 		<div id="center">
 			<div id="leftside"></div>
 			<div id="info">
 				<div id="title">시스템 관리</div>
 				<div id="btn">
-					<div id="startClass" onClick="sendSign('${accessInfo[0].emCode}','2002','startSign')">입실</div>
-					<div id="middleSign" onClick="sendSign('${accessInfo[0].emCode}','3003','middleSign')">중간신호</div>
-					<div id="outClass" onClick="sendSign('${accessInfo[0].emCode}','4004','outSign')">외출</div>
-					<div id="endClass" onClick="sendSign('${accessInfo[0].emCode}','5005','endSign')">퇴실</div>
-					<div id="classManagement" onClick="moveService('SM','${accessInfo[0].emCode}')">수업 관리</div>
-					<div id="studentManagement" onClick="moveService('SSI', '${accessInfo[0].emCode}')">회원 등록</div>
-					<div id="myInfo" onClick="moveService('SFM','${accessInfo[0].emCode}')">학생 출결 내역</div>
+					<div class="d">
+						<select id="stslcode" style="width:200px;height:80px;font-size:20pt;"></select>
+					</div>
+					<div id="startClass" onClick="sendSignal('2002','${accessInfo[0].emCode}')">입실</div>
+					<div id="middleSign" onClick="sendSignal('3003','${accessInfo[0].emCode}')">중간신호</div>
+					<div id="outClass" onClick="sendSignal('4004','${accessInfo[0].emCode}')">외출</div>
+					<div id="endClass" onClick="sendSignal('5005','${accessInfo[0].emCode}')">퇴실</div>
+					<div id="classManagement">수업 관리</div>
+					<div id="studentManagement"
+						onClick="moveService('SSI', '${accessInfo[0].emCode}')">회원
+						등록</div>
+					<div id="myInfo"
+						onClick="moveService('SFM','${accessInfo[0].emCode}')">학생 출결
+						내역</div>
 				</div>
 			</div>
 			<div id="rightside"></div>

@@ -48,7 +48,7 @@ public class LoginPageFrontController extends HttpServlet {
 
 
 
-		if(session.getAttribute("emCode")!= null && session.getAttribute("stCode")!= null) {
+		if(session.getAttribute("emCode")!= null || session.getAttribute("stCode")!= null) {
 			if(jobCode.equals("f")) {
 				log = new LoginManagement(req);
 				action = log.backController(1);

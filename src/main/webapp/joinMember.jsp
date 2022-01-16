@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="resource/resource.js"></script>
 <script>
 function checkOnlyOne(element) {
   
@@ -29,14 +30,74 @@ function getAjaxJson(action, data, fn){
 	
 	ajax.onreadystatechange = function(){
 		if(ajax.readyState == 4 && ajax.status == 200){
-			window[fn](JSON.parse(ajax.responseText));
-			
+			if(fn!=""){
+				window[fn](JSON.parse(ajax.responseText));	
+			}else{
+				alert(JSON.parse(ajax.responseText));
+			}
 		}
-	};
-	
+	};	
 	ajax.open("post", action, true);
 	ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	ajax.send(data);
+}
+function regMember(){
+	const userData = [ document.getElementsByName("stname")[0],
+						document.getElementsByName("stpassword")[0] ];
+	const message = [ "이름 입력","패스워드 입력" ];
+	for (let index = 0; index < userData.length; index++) {
+		if (!isEmpty(userData[index])) {
+			alert(message[index]);
+			return;
+		}
+	}
+	let bwCode="";
+	for(idx=0;idx<3;idx++){
+		if(document.getElementsByName("people")[idx].checked){
+			bwCode=document.getElementsByName("people")[idx].value;
+		}
+	}
+	const stslcode=document.getElementById("stslcode");
+	const emCode=document.getElementsByName("stcode")[0].value;
+	const slCode=stslcode.options[stslcode.selectedIndex].value;
+	const emName=document.getElementsByName("stname")[0].value;
+	const emPassword=document.getElementsByName("stpassword")[0].value;
+	const data="bwCode="+encodeURIComponent(bwCode)
+				+"&emCode="+encodeURIComponent(emCode)
+				+"&slCode="+encodeURIComponent(slCode)
+				+"&emName="+encodeURIComponent(emName)
+				+"&emPassword="+encodeURIComponent(emPassword);
+	getAjaxJson("regMember",data,"");
+	
+	
+}
+function getStudyList(){
+	getAjaxJson("StudyList","","makeStudyList");
+}
+function makeStudyList(data){
+	let option;
+	option=createOption("0");
+	option.innerHTML="선택안함";
+	stslcode.appendChild(option);
+	
+	for(idx=0;idx<data.length;idx++){
+		option=createOption(data[idx].slCode);
+		option.innerHTML=data[idx].slName;
+		stslcode.appendChild(option);
+	}	
+}
+function createOption(value){
+	const option=document.createElement("option");
+	option.setAttribute("value",value);
+	return option;
+}
+function reset(data){
+	alert(data);
+	const emCode=document.getElementsByName("stcode")[0].value="";
+	
+	const emName=document.getElementsByName("stname")[0].value="";
+	const emPassword=document.getElementsByName("stpassword")[0].value="";
+	stslcode.options[stslcode.selectedIndex].selected=false;
 }
 </script>
 <style>
@@ -46,15 +107,35 @@ table{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);}
 .c{font-size : 30px;}
 .d{font-size : 30px;}
 #e{text-align : right;}
-#f{text-align : right;}
+#f{text-align : left;font-size:17pt;}
+input[type=checkbox] {
+
+-ms-transform: scale(2); /* IE */
+
+-moz-transform: scale(2); /* FF */
+
+-webkit-transform: scale(2); /* Safari and Chrome */
+
+-o-transform: scale(2); /* Opera */
+
+padding: 10px;
+
+}
 </style>
 
 </head>
-<body>
+<body onLoad="getStudyList()">
 	<div id = "a">[${accessInfo[0].emName}]님 환영합니다!! 귀하의 등급은 관리자입니다!!</div>
 	<div id = "b">ICIA</div>
 	
 <table>
+	<tr>
+		<td id = "f">
+			<label><input type="checkbox" name="people" value="1" onClick="checkOnlyOne(this)"> 학생</label>
+			<label><input type="checkbox" name="people" value="1000" onClick="checkOnlyOne(this)"> 선생님</label>
+			<label><input type="checkbox" name="people" value="1001" onClick="checkOnlyOne(this)"> 관리자</label>
+		</td>
+	</tr>
 	<tr>
 		<td>
 			<div class = "d" >회원코드 : <input class = "c" type = "text" name = "stcode" value = "" placeholder = "회원코드"/></div> 
@@ -62,7 +143,9 @@ table{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);}
 	</tr>
 	<tr>
 		<td>
-			<div class = "d" >수업코드 : <input class = "c" type = "text" name = "stslcode" placeholder = "수업코드"/></div>
+			<div class = "d" >수업코드 : <select class = "c" id = "stslcode" >
+			<option value="0">수업선택</option>
+			</select></div>
 		</td>
 	</tr>
 	<tr>
@@ -72,20 +155,13 @@ table{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);}
 	</tr>
 	<tr>
 		<td>
-			<div class = "d" >회원비밀번호 : <input class = "c" type = "text" name = "stpassword" placeholder = "회원비밀번호"/></div>
-		</td>
-	</tr>
-	<tr>
-		<td id = "f">
-			<label><input type="checkbox" name="people" value="1" onClick="checkOnlyOne(this)"> 학생</label>
-			<label><input type="checkbox" name="people" value="2" onClick="checkOnlyOne(this)"> 선생님</label>
-			<label><input type="checkbox" name="people" value="3" onClick="checkOnlyOne(this)"> 관리자</label>
+			<div class = "d" >회원비밀번호 : <input class = "c" type = "password" name = "stpassword" placeholder = "회원비밀번호"/></div>
 		</td>
 	</tr>
 	<tr>
 		<td>
 			<div id = "e">
-				<input type = "button" style="width:60pt;height:30pt;" value="등록" onClick=""/>
+				<input type = "button" style="width:60pt;height:30pt;" value="등록" onClick="regMember()"/>
 			</div>
 		</td>
 	</tr>
