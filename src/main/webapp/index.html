@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+function checkOnlyOne(element) {
+  
+  const checkboxes 
+      = document.getElementsByName("people");
+  
+  checkboxes.forEach((cb) => {
+    cb.checked = false;
+  })
+  
+  element.checked = true;
+}
+
+function authmanagement() {
+	/* 1. HTML 개체와의 연결 : name, id 속성 */
+	const form = document.getElementsByName("login")[0];
+	/* 2. 사용자 데이터의 수집 */
+	const userData = [ document.getElementsByName("code")[0],
+			document.getElementsByName("password")[0] ];
+	const message = [ "아이디 입력","패스워드 입력" ];
+	
+	/* 3. 유효성 검사 */
+	//if(!isEmpty(emsrcode)) {alert("상점코드 입력"); return;}
+	//if(!isEmpty(emcode)) {alert("직원코드 입력"); return;}
+	//if(!isEmpty(empassword)) {alert("패스워드 입력"); return;}
+	for (let index = 0; index < userData.length; index++) {
+		if (!isEmpty(userData[index])) {
+			alert(message[index]);
+			return;
+		}
+	}
+
+	/* 4. 서버 전송 */
+	form.submit();
+}
+
+function isEmpty(obj){
+	let check = true;
+	if(obj.value == ""){
+		check = false;
+	}
+	return check;
+}
+
+
+
+
+</script>
+
+<style>
+#title {
+	border: 1px solid #000000;
+	font-size: 200px;
+}
+
+table {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#iid {
+	text-align: justify;
+	width: 100%;
+}
+
+.id {
+	width: 100%;
+}
+</style>
+
+</head>
+
+<body>
+	<form name="login" action="Access" method="post">
+		<table>
+
+			<tr>
+				<td id="title">KSWL</td>
+			</tr>
+
+
+			<tr>
+				<td id="iid">KSWL아카데미</td>
+			</tr>
+
+
+			<tr>
+				<td><label><input id="student"type="checkbox" name="people"
+						value="1" onClick="checkOnlyOne(this)"> 학생</label> <label><input
+						id="teacher" type="checkbox" name="people" value="1000"
+						onClick="checkOnlyOne(this)"> 선생님</label> <label><input
+						id="boss" type="checkbox" name="people" value="1001"
+						onClick="checkOnlyOne(this)"> 행정지원</label></td>
+			</tr>
+			<tr>
+				<td><input class="id" type="text" name="code" placeholder="ID" />
+				</td>
+			</tr>
+			<tr>
+				<td><input class="id" type="password" name="password"
+					placeholder="PASSWORD" /></td>
+			</tr>
+			<tr class="log">
+				<td><input type="button" id="btn" value="로그인"
+					onClick="authmanagement()" /></td>
+			</tr>
+
+
+		</table>
+	</form>
+</body>
+</html>
